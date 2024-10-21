@@ -20,7 +20,37 @@ const gameBoard = (function () {
 const gameController = (function () {
   const playerOne = createPlayer('Player One', 'X');
   const playerTwo = createPlayer('Player Two', 'O');
+  const board = gameBoard.getBoard();
   let currentPlayer = playerOne;
+  let isGameOver = false;
+
+  const checkGameTied = () => board.every(cell => cell !== '');
+
+  const checkWinner = () => {
+    const winCombinations = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+      [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+    ];
+
+    for (let combination of winCombinations) {
+      const [a, b, c] = combination;
+      if (board[a] === '') continue;
+      if (board[a] === board[b] && board[b] === board[c]) {
+        console.log(combination);
+        return true;
+      }
+    }
+  }
+
+  const checkGameOver = () => {
+    if (checkWinner()) {
+      isGameOver = true;
+      console.log(currentPlayer.getName());
+    } else if (checkGameTied()) {
+      isGameOver = true;
+      console.log("It's a tie");
+    }
+  }
 
   const switchPlayerTurn = () => {
     currentPlayer = currentPlayer === playerOne ?
@@ -28,7 +58,9 @@ const gameController = (function () {
   }
 
   const playRound = (cell) => {
+    if (isGameOver) return;
     gameBoard.addMarker(cell, currentPlayer.getMarker());
+    checkGameOver();
     switchPlayerTurn();
     console.log(gameBoard.getBoard());
   }
