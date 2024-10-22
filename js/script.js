@@ -59,6 +59,7 @@ const gameController = (function () {
 
   const playRound = (cell) => {
     if (isGameOver) return;
+    if (board[cell] !== '') return;
     gameBoard.addMarker(cell, currentPlayer.getMarker());
     checkGameOver();
     switchPlayerTurn();
@@ -66,4 +67,20 @@ const gameController = (function () {
   }
 
   return { playRound };
+})();
+
+const displayController = (function () {
+  const mainEl = document.querySelector('.main');
+
+  const handleClick = (event) => {
+    const target = event.target;
+    if (target.classList.contains('game-board')) return;
+
+    if (target.classList.contains('cell')) {
+      const cell = target.dataset.id;
+      gameController.playRound(cell);
+    }
+  }
+
+  mainEl.addEventListener('click', handleClick);
 })();
