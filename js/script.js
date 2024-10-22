@@ -72,6 +72,12 @@ const gameController = (function () {
 const displayController = (function () {
   const mainEl = document.querySelector('.main');
 
+  const renderGameBoard = () => {
+    const board = gameBoard.getBoard();
+    const cells = document.querySelectorAll('.cell');
+    board.forEach((marker, i) => cells[i].textContent = marker);
+  }
+
   const handleClick = (event) => {
     const target = event.target;
     if (target.classList.contains('game-board')) return;
@@ -80,6 +86,7 @@ const displayController = (function () {
       const cell = target.dataset.id;
       gameController.playRound(cell);
     }
+    renderGameBoard();
   }
 
   mainEl.addEventListener('click', handleClick);
