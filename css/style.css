@@ -39,6 +39,11 @@ button,
   margin-top: 1.2rem;
 }
 
+.main>.game-status {
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+}
+
 .main .game-board {
   display: grid;
   grid-template: repeat(3, 150px) / repeat(3, 150px);
