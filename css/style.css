@@ -3,7 +3,7 @@
   --clr-secondary: #2b430b4f;
   --clr-accent: #f98866;
   --clr-neutral-lt: #faf9f9;
-  --clr-neutral-dk: #2b430b68; 
+  --clr-neutral-dk: #2b430b68;
   --ff-base: ui-rounded, 'Hiragino Maru Gothic ProN',
     Quicksand, Comfortaa, Manjari, 'Arial Rounded MT',
     'Arial Rounded MT Bold', Calibri, source-sans-pro,
@@ -54,4 +54,23 @@ button,
 
 .game-board .cell:hover {
   background: var(--clr-neutral-dk);
+}
+
+.btn-container button {
+  background: var(--clr-secondary);
+  color: var(--clr-neutral-lt);
+  padding: .5rem .8rem;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-container button:hover {
+  background: var(--clr-neutral-dk);
+  color: var(--clr-accent);
+}
+
+button.new-game {
+  margin-top: 2rem;
 }
