@@ -34,6 +34,11 @@ button,
   cursor: pointer;
 }
 
+.header>h1 {
+  font-size: 3rem;
+  margin-top: 1.2rem;
+}
+
 .main .game-board {
   display: grid;
   grid-template: repeat(3, 150px) / repeat(3, 150px);
