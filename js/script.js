@@ -164,7 +164,14 @@ const displayController = (function () {
     }
   }
 
+  const preventDialogClose = (e) => {
+    if (e.key === 'Escape' && true) {
+      e.preventDefault();
+    }
+  }
+
   mainEl.addEventListener('click', handleClick);
   playerForm.addEventListener('submit', submitPlayerForm);
+  dialogEl.addEventListener('keydown', preventDialogClose);
   dialogEl.showModal();
 })();
