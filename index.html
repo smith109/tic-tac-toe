@@ -30,6 +30,26 @@
         <button class="new-game">New Game</button>
       </div>
     </div>
+    <dialog>
+      <div class="header">
+        <h2>Who's Playing?</h2>
+      </div>
+      <form method="dialog">
+        <div class="form-row">
+          <label for="p1_name">Player One:</label>
+          <input type="text" id="p1_name" name="player_one" placeholder="Name" pattern="\S(.*\S)?"
+            title="Enter a name without leading or ending spaces Example: Jerry">
+        </div>
+        <div class="form-row">
+          <label for="p2_name">Player Two:</label>
+          <input type="text" id="p2_name" name="player_two" placeholder="Name" pattern="\S(.*\S)?"
+            title="Enter a name without leading or ending spaces Example: Jerry">
+        </div>
+        <div class="form-row">
+          <button>Let's Play!</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 
 </html>
