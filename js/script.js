@@ -18,13 +18,23 @@ const gameBoard = (function () {
 })();
 
 const gameController = (function () {
-  const playerOne = createPlayer('Player One', 'X');
-  const playerTwo = createPlayer('Player Two', 'O');
   const board = gameBoard.getBoard();
-  let currentPlayer = playerOne;
-  let isGameOver = false;
-  let winningCells = '';
-  let result = '';
+  let currentPlayer;
+  let playerOne;
+  let playerTwo;
+  let isGameOver;
+  let winningCells;
+  let result;
+
+  const startGame = (playerOneName, playerTwoName) => {
+    playerOne = createPlayer(playerOneName, 'X');
+    playerTwo = createPlayer(playerTwoName, 'O');
+    currentPlayer = playerOne;
+    isGameOver = false;
+    winningCells = '';
+    result = '';
+    gameBoard.clearBoard();
+  }
 
   const checkGameTied = () => board.every(cell => cell !== '');
   const getCurrentPlayer = () => currentPlayer;
@@ -71,6 +81,7 @@ const gameController = (function () {
   }
 
   return {
+    startGame,
     getCurrentPlayer,
     getWinningCells,
     getResult,
@@ -81,6 +92,27 @@ const gameController = (function () {
 const displayController = (function () {
   const mainEl = document.querySelector('.main');
   const cells = document.querySelectorAll('.cell');
+  const playerForm = document.querySelector('form');
+  const dialogEl = document.querySelector('dialog');
+
+  const submitPlayerForm = (e) => {
+    e.preventDefault();
+    let playerOneName = document.querySelector('#p1_name').value;
+    let playerTwoName = document.querySelector('#p2_name').value;
+
+    if (!playerOneName) {
+      playerOneName = 'Player One';
+    }
+
+    if (!playerTwoName) {
+      playerTwoName = 'Player Two';
+    }
+
+    gameController.startGame(playerOneName, playerTwoName);
+    dialogEl.close();
+    updateGameStatus();
+    renderGameBoard();
+  }
 
   const highlightWinningCells = () => {
     const winningCells = gameController.getWinningCells();
@@ -114,12 +146,16 @@ const displayController = (function () {
     if (target.classList.contains('cell')) {
       const cell = target.dataset.id;
       gameController.playRound(cell);
+      updateGameStatus();
+      renderGameBoard();
     }
 
-    updateGameStatus();
-    renderGameBoard();
+    if (target.classList.contains('new-game')) {
+      dialogEl.showModal();
+    }
   }
 
-  updateGameStatus();
   mainEl.addEventListener('click', handleClick);
+  playerForm.addEventListener('submit', submitPlayerForm);
+  dialogEl.showModal();
 })();
