@@ -112,12 +112,21 @@ const displayController = (function () {
     dialogEl.close();
     updateGameStatus();
     renderGameBoard();
+    removeCellHighlights();
   }
 
   const highlightWinningCells = () => {
     const winningCells = gameController.getWinningCells();
     if (!winningCells) return;
     winningCells.forEach(i => cells[i].classList.add('highlight'));
+  }
+
+  const removeCellHighlights = () => {
+    cells.forEach(cell => {
+      if (cell.classList.contains('highlight')) {
+        cell.classList.remove('highlight');
+      }
+    })
   }
 
   const updateGameStatus = () => {
