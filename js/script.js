@@ -23,8 +23,11 @@ const gameController = (function () {
   const board = gameBoard.getBoard();
   let currentPlayer = playerOne;
   let isGameOver = false;
+  let result = '';
 
   const checkGameTied = () => board.every(cell => cell !== '');
+  const getCurrentPlayer = () => currentPlayer;
+  const getResult = () => result;
 
   const checkWinner = () => {
     const winCombinations = [
@@ -45,10 +48,10 @@ const gameController = (function () {
   const checkGameOver = () => {
     if (checkWinner()) {
       isGameOver = true;
-      console.log(currentPlayer.getName());
+      result = `${currentPlayer.getName()} wins!`;
     } else if (checkGameTied()) {
       isGameOver = true;
-      console.log("It's a tie");
+      result = "It's a tie!";
     }
   }
 
@@ -63,14 +66,26 @@ const gameController = (function () {
     gameBoard.addMarker(cell, currentPlayer.getMarker());
     checkGameOver();
     switchPlayerTurn();
-    console.log(gameBoard.getBoard());
   }
 
-  return { playRound };
+  return { getCurrentPlayer, getResult, playRound };
 })();
 
 const displayController = (function () {
   const mainEl = document.querySelector('.main');
+
+  const updateGameStatus = () => {
+    const gameStatusEl = document.querySelector('.game-status');
+    const currentPlayer = gameController.getCurrentPlayer();
+    const result = gameController.getResult();
+
+    if (!result) {
+      gameStatusEl.textContent =
+        `It's ${currentPlayer.getName()}'s turn`;
+    } else {
+      gameStatusEl.textContent = `${result}`;
+    }
+  }
 
   const renderGameBoard = () => {
     const board = gameBoard.getBoard();
@@ -86,8 +101,11 @@ const displayController = (function () {
       const cell = target.dataset.id;
       gameController.playRound(cell);
     }
+
+    updateGameStatus();
     renderGameBoard();
   }
 
+  updateGameStatus();
   mainEl.addEventListener('click', handleClick);
 })();
