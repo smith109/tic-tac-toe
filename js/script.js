@@ -23,10 +23,12 @@ const gameController = (function () {
   const board = gameBoard.getBoard();
   let currentPlayer = playerOne;
   let isGameOver = false;
+  let winningCells = '';
   let result = '';
 
   const checkGameTied = () => board.every(cell => cell !== '');
   const getCurrentPlayer = () => currentPlayer;
+  const getWinningCells = () => winningCells;
   const getResult = () => result;
 
   const checkWinner = () => {
@@ -39,7 +41,7 @@ const gameController = (function () {
       const [a, b, c] = combination;
       if (board[a] === '') continue;
       if (board[a] === board[b] && board[b] === board[c]) {
-        console.log(combination);
+        winningCells = combination;
         return true;
       }
     }
@@ -68,28 +70,40 @@ const gameController = (function () {
     switchPlayerTurn();
   }
 
-  return { getCurrentPlayer, getResult, playRound };
+  return {
+    getCurrentPlayer,
+    getWinningCells,
+    getResult,
+    playRound
+  };
 })();
 
 const displayController = (function () {
   const mainEl = document.querySelector('.main');
+  const cells = document.querySelectorAll('.cell');
+
+  const highlightWinningCells = () => {
+    const winningCells = gameController.getWinningCells();
+    if (!winningCells) return;
+    winningCells.forEach(i => cells[i].classList.add('highlight'));
+  }
 
   const updateGameStatus = () => {
     const gameStatusEl = document.querySelector('.game-status');
     const currentPlayer = gameController.getCurrentPlayer();
     const result = gameController.getResult();
 
-    if (!result) {
+    if (result) {
+      gameStatusEl.textContent = `${result}`;
+      highlightWinningCells();
+    } else {
       gameStatusEl.textContent =
         `It's ${currentPlayer.getName()}'s turn`;
-    } else {
-      gameStatusEl.textContent = `${result}`;
     }
   }
 
   const renderGameBoard = () => {
     const board = gameBoard.getBoard();
-    const cells = document.querySelectorAll('.cell');
     board.forEach((marker, i) => cells[i].textContent = marker);
   }
 
