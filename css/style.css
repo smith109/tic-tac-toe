@@ -2,6 +2,7 @@
   --clr-primary: #a1be95;
   --clr-secondary: #2b430b4f;
   --clr-accent: #f98866;
+  --clr-highlight: #f3bf5f;
   --clr-neutral-lt: #faf9f9;
   --clr-neutral-dk: #2b430b68;
   --ff-base: ui-rounded, 'Hiragino Maru Gothic ProN',
@@ -64,6 +65,12 @@ button,
 
 .game-board .cell:hover {
   background: var(--clr-neutral-dk);
+}
+
+.game-board .highlight,
+.game-board .highlight:hover {
+  background: var(--clr-highlight);
+  color: var(--clr-neutral-lt);
 }
 
 .btn-container button {
