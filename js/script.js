@@ -44,8 +44,8 @@ const gameController = (() => {
   let activePlayer = playerOne;
   let result;
 
-  const getActivePlayer = () => activePlayer;
   const getResult = () => result;
+  const getActivePlayer = () => activePlayer;
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
@@ -73,5 +73,5 @@ const gameController = (() => {
     checkGameOver(activePlayer.getMarker());
   };
 
-  return { getActivePlayer, getResult, playRound };
+  return { getResult, getActivePlayer, playRound };
 })();
