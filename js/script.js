@@ -15,7 +15,23 @@ const gameBoard = (() => {
     board[index] = marker;
   };
 
-  return { getBoard, clearBoard, isFull, addMarker };
+  const checkForWin = (marker) => {
+    const winCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    return winCombinations.find((combination) =>
+      combination.every((cell) => board[cell] === marker));
+  };
+
+  return { getBoard, clearBoard, isFull, addMarker, checkForWin };
 })();
 
 const gameController = (() => {
@@ -26,20 +42,36 @@ const gameController = (() => {
 
   const [playerOne, playerTwo] = players;
   let activePlayer = playerOne;
+  let result;
 
   const getActivePlayer = () => activePlayer;
+  const getResult = () => result;
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
   };
 
-  const playRound = (cell) => {
-    const board = gameBoard.getBoard();
-    if (board[cell] !== '') return;
+  const checkGameOver = (marker) => {
+    const winningPattern = gameBoard.checkForWin(marker);
+    const boardFull = gameBoard.isFull();
+    const { name } = activePlayer;
 
-    gameBoard.addMarker(cell, activePlayer.getMarker());
-    switchPlayerTurn();
+    if (winningPattern) {
+      result = { winner: name, winningPattern };
+    } else if (boardFull) {
+      result = { winner: 'Draw', winningPattern: null };
+    } else {
+      switchPlayerTurn();
+    }
   };
 
-  return { getActivePlayer, playRound };
+  const playRound = (cell) => {
+    const board = gameBoard.getBoard();
+    if (result || board[cell] !== '') return;
+
+    gameBoard.addMarker(cell, activePlayer.getMarker());
+    checkGameOver(activePlayer.getMarker());
+  };
+
+  return { getActivePlayer, getResult, playRound };
 })();
