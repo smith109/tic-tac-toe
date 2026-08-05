@@ -1,3 +1,8 @@
+function createPlayer(name, marker) {
+  const getMarker = () => marker;
+  return { name, getMarker };
+}
+
 const gameBoard = (() => {
   const board = Array(9).fill('');
 
