@@ -1,0 +1,44 @@
+:root {
+  --clr-primary-bg: #f5f7fa;
+  --clr-primary-text: #1f2937;
+  --clr-secondary-text: #6b7280;
+  --spacing: calc(0.5rem + 1vw);
+  --fs-medium: clamp(1rem, 2.5vw, 1.7rem);
+  --fs-large: clamp(1.8rem, 2.5vw, 2.8rem);
+  --ff-neo-grotesque: Inter, Roboto, 'Helvetica Neue', 
+    'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:not(dialog) {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  color: var(--clr-primary-text);
+  font-family: var(--ff-neo-grotesque);
+  background-color: var(--clr-primary-bg);
+}
+
+.container {
+  text-align: center;
+}
+
+.container > .header {
+  padding: var(--spacing);
+}
+
+.header > h1 {
+  margin-bottom: 8px;
+  letter-spacing: 0.12rem;
+  font-size: var(--fs-large);
+}
+
+.header > .message-center {
+  font-size: var(--fs-medium);
+  color: var(--clr-secondary-text);
+}
