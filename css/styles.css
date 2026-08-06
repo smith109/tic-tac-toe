@@ -1,10 +1,13 @@
 :root {
-  --clr-primary-bg: #f5f7fa;
+  --clr-grid-lines: #d1d5db;
+  --clr-primary-bg: #f9fafb;
   --clr-primary-text: #1f2937;
   --clr-secondary-text: #6b7280;
-  --spacing: calc(0.5rem + 1vw);
+  --spacing-medium: calc(1rem + 0.5vw);
+  --spacing-large: calc(0.5rem + 1vw);
   --fs-medium: clamp(1rem, 2.5vw, 1.7rem);
   --fs-large: clamp(1.8rem, 2.5vw, 2.8rem);
+  --fs-marker: clamp(2.5rem, 10vw, 4.5rem);
   --ff-neo-grotesque: Inter, Roboto, 'Helvetica Neue', 
     'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
 }
@@ -29,6 +32,8 @@ body {
 }
 
 .container > .header {
+  margin-top: 1.2rem;
+  margin-bottom: 2rem;
   padding: var(--spacing);
 }
 
@@ -41,4 +46,30 @@ body {
 .header > .message-center {
   font-size: var(--fs-medium);
   color: var(--clr-secondary-text);
+}
+
+.main > .game-board {
+  display: grid;
+  justify-content: center;
+  padding: var(--spacing-medium);
+  grid-template-rows: repeat(3, clamp(70px, 25vw, 150px));
+  grid-template-columns: repeat(3, clamp(70px, 25vw, 150px));
+}
+
+.game-board > .cell {
+  display: flex;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-marker);
+  border-right: 3px solid var(--clr-grid-lines);
+  border-bottom: 3px solid var(--clr-grid-lines);
+}
+
+.game-board > .cell:nth-child(3n) {
+  border-right: none;
+}
+
+.game-board > .cell:nth-child(n+7) {
+  border-bottom: none;
 }
