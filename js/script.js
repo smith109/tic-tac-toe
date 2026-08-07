@@ -41,6 +41,7 @@ const gameController = (() => {
   ];
 
   const [playerOne, playerTwo] = players;
+  const { getBoard } = gameBoard;
   let activePlayer = playerOne;
   let result;
 
@@ -66,12 +67,66 @@ const gameController = (() => {
   };
 
   const playRound = (cell) => {
-    const board = gameBoard.getBoard();
+    const board = getBoard();
     if (result || board[cell] !== '') return;
 
     gameBoard.addMarker(cell, activePlayer.getMarker());
     checkGameOver(activePlayer.getMarker());
   };
 
-  return { getResult, getActivePlayer, playRound };
+  return { getBoard, getResult, getActivePlayer, playRound };
+})();
+
+const displayController = (() => {
+  const messageCenterDiv = document.querySelector('.message-center');
+  const gameBoardDiv = document.querySelector('.game-board');
+  const boardCellDivs = document.querySelectorAll('.cell');
+
+  const highlightWinningCells = (winningPattern) => {
+    winningPattern.forEach((cell) =>
+      boardCellDivs[cell].classList.add('highlight')
+    );
+  };
+
+  const checkForResult = (result) => {
+    if (!result) return;
+
+    const { winner, winningPattern } = result;
+
+    if (winner && winningPattern) {
+      messageCenterDiv.textContent = `${winner} Wins!`;
+      highlightWinningCells(winningPattern);
+    }
+
+    if (winningPattern === null) {
+      messageCenterDiv.textContent = `It's a ${winner}!`;
+    }
+  };
+
+  const updateDisplay = () => {
+    const board = gameController.getBoard();
+    const activePlayer = gameController.getActivePlayer();
+    let result = gameController.getResult();
+
+    messageCenterDiv.textContent = `${activePlayer.name}'s Turn`;
+
+    boardCellDivs.forEach((cellDiv, index) => {
+      cellDiv.textContent = board[index];
+      cellDiv.dataset.marker = board[index];
+    });
+
+    checkForResult(result);
+  };
+
+  const clickHandlerBoard = (e) => {
+    const selectedCell = e.target.dataset.id;
+
+    if (!selectedCell) return;
+
+    gameController.playRound(selectedCell);
+    updateDisplay();
+  };
+
+  gameBoardDiv.addEventListener('click', clickHandlerBoard);
+  updateDisplay();
 })();
