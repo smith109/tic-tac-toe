@@ -1,6 +1,6 @@
 :root {
-  --clr-grid-lines: #d1d5db;
-  --clr-primary-bg: #f9fafb;
+  --clr-grid-lines: #cbd5e1;
+  --clr-primary-bg: #f8fafc;
   --clr-primary-text: #1f2937;
   --clr-secondary-text: #6b7280;
   --spacing-medium: calc(1rem + 0.5vw);
@@ -20,11 +20,37 @@
   margin: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
 body {
   line-height: 1.5;
   color: var(--clr-primary-text);
   font-family: var(--ff-neo-grotesque);
   background-color: var(--clr-primary-bg);
+}
+
+input,
+button {
+  font: inherit;
+}
+
+button,
+.game-board > .cell {
+  cursor: pointer;
+}
+
+button {
+  border: 0;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 2rem;
+  border-radius: 8px;
 }
 
 .container {
@@ -66,10 +92,83 @@ body {
   border-bottom: 3px solid var(--clr-grid-lines);
 }
 
+.game-board > .cell:hover {
+  background-color: #dce8f4;
+}
+
 .game-board > .cell:nth-child(3n) {
   border-right: none;
 }
 
 .game-board > .cell:nth-child(n+7) {
   border-bottom: none;
+}
+
+.game-board > .cell[data-marker='X'] {
+  color: #3b82f6;
+}
+
+.game-board > .cell[data-marker='O'] {
+  color: #ec4899;
+}
+
+.game-board > .cell.highlight {
+  background-color: #f9e795;
+}
+
+.btn-container > .new-game-btn {
+  padding: 12px 28px;
+  background-color: #8aaae5;
+}
+
+.btn-container > .new-game-btn:hover {
+  background-color: #768eba;
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog {
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: calc(0.8rem + 2vw);
+}
+
+#new-player-modal > .modal-header {
+  margin-bottom: 0.6rem;
+} 
+
+.form-group label {
+  display: block;
+  font-size: 1.25rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.form-group > input[type='text'] {
+  border-radius: 5px;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid #cbd5e1;
+}
+
+label + input:focus {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+.form-btn {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.form-btn > button[type='Submit'] {
+  padding: 12px 24px;
+  background-color: #3b82f6;
+}
+
+.form-btn > button[type='Submit']:hover {
+  background-color: #2563eb;
 }
