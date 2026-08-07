@@ -35,21 +35,23 @@ const gameBoard = (() => {
 })();
 
 const gameController = (() => {
-  const players = [
-    createPlayer('Player One', 'X'),
-    createPlayer('Player Two', 'O')
-  ];
+  const players = [];
 
-  const [playerOne, playerTwo] = players;
-  const { getBoard } = gameBoard;
-  let activePlayer = playerOne;
+  const { getBoard, clearBoard } = gameBoard;
+  let activePlayer = players[0];
   let result;
 
   const getResult = () => result;
   const getActivePlayer = () => activePlayer;
 
+  const setPlayers = (playerOneName, playerTwoName) => {
+    const playerOne = createPlayer(playerOneName, 'X');
+    const playerTwo = createPlayer(playerTwoName, 'O');
+    return [playerOne, playerTwo];
+  }
+
   const switchPlayerTurn = () => {
-    activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
 
   const checkGameOver = (marker) => {
@@ -74,11 +76,22 @@ const gameController = (() => {
     checkGameOver(activePlayer.getMarker());
   };
 
-  return { getBoard, getResult, getActivePlayer, playRound };
+  const resetGame = (playerOneName, playerTwoName) => {
+    const [playerOne, playerTwo] = setPlayers(playerOneName, playerTwoName);
+    activePlayer = playerOne;
+    result = null;
+
+    clearBoard();
+    players.push(playerOne, playerTwo);
+  }
+
+  return { getBoard, getResult, getActivePlayer, playRound, resetGame };
 })();
 
 const displayController = (() => {
   const messageCenterDiv = document.querySelector('.message-center');
+  const newPlayerModal = document.querySelector('#new-player-modal');
+  const newPlayerForm = document.querySelector('.new-player-form');
   const gameBoardDiv = document.querySelector('.game-board');
   const boardCellDivs = document.querySelectorAll('.cell');
 
@@ -86,6 +99,13 @@ const displayController = (() => {
     winningPattern.forEach((cell) =>
       boardCellDivs[cell].classList.add('highlight')
     );
+  };
+
+  const removeCellHighlights = () => {
+    boardCellDivs.forEach((cellDiv) => {
+      if (!(cellDiv.classList.contains('highlight'))) return;
+      cellDiv.classList.remove('highlight');
+    });
   };
 
   const checkForResult = (result) => {
@@ -127,6 +147,18 @@ const displayController = (() => {
     updateDisplay();
   };
 
+  const submitPlayerForm = () => {
+    const inputs = newPlayerForm.elements;
+    let playerOneName = inputs['p1-name'].value.trim() || 'Player One';
+    let playerTwoName = inputs['p2-name'].value.trim() || 'Player Two';
+
+    gameController.resetGame(playerOneName, playerTwoName);
+    removeCellHighlights();
+    newPlayerForm.reset();
+    updateDisplay();
+  };
+
+  newPlayerModal.showModal();
   gameBoardDiv.addEventListener('click', clickHandlerBoard);
-  updateDisplay();
+  newPlayerForm.addEventListener('submit', submitPlayerForm);
 })();
