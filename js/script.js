@@ -82,6 +82,7 @@ const gameController = (() => {
     result = null;
 
     clearBoard();
+    players.splice(0);
     players.push(playerOne, playerTwo);
   }
 
@@ -151,6 +152,7 @@ const displayController = (() => {
     const inputs = newPlayerForm.elements;
     let playerOneName = inputs['p1-name'].value.trim() || 'Player One';
     let playerTwoName = inputs['p2-name'].value.trim() || 'Player Two';
+
 
     gameController.resetGame(playerOneName, playerTwoName);
     removeCellHighlights();
